@@ -10,7 +10,6 @@ const Triangle = require('./lib/Triangle');
 const Square = require('./lib/Square');
 const Circle = require('./lib/Circle');
 
-// ***** Questions to generate the Logo and create README ******
 const questions = [
   {
     type: 'input',
@@ -38,7 +37,6 @@ const questions = [
   },
 ];
 
-// **** Function of Logo Generator ****
 function generateLogo(answers) {
   const { characters, textColor, shape, shapeColor } = answers;
 
@@ -46,7 +44,7 @@ function generateLogo(answers) {
   const document = window.document;
   registerWindow(window, document);
 
-  const canvas = SVG(document.documentElement).size(300, 200); // Set the size of the SVG canvas
+  const canvas = SVG(document.documentElement).size(300, 200);
 
   const ctx = createCanvas(300, 200).getContext('2d');
 
@@ -65,13 +63,16 @@ function generateLogo(answers) {
       throw new Error('Invalid shape selected.');
   }
   shapeObject.setColor(shapeColor);
-  shapeObject.draw(ctx);
+  shapeObject.draw(canvas);
 
-  ctx.font = '40px Arial';
-  ctx.fillStyle = textColor;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(characters, 150, 100); // Position the text in the center of the canvas
+  const text = canvas.text(characters).fill(textColor);
+
+  const textWidth = text.bbox().width;
+  const textHeight = text.bbox().height;
+  const textX = 100 - textWidth / 2;
+  const textY = 100 - textHeight / 2;
+
+  text.move(textX, textY);
 
   const logoSvgContent = canvas.svg();
 
@@ -84,7 +85,6 @@ function generateLogo(answers) {
     }
   });
 
-  // ***** Save the Logo in the folder 'examples' *****
   const saveLogo = 'examples';
   const saveLogoPath = path.join(saveLogo, `${characters}.svg`);
 
@@ -96,67 +96,51 @@ function generateLogo(answers) {
       console.log(`Open ${saveLogoPath} in a browser to view the logo.`);
     }
   });
-
-
 }
 
-// **** Function to create README ****
 function createREADME(answers) {
-  const { characters, textColor, shape, shapeColor } = answers;
+  return `# Logo Generator 
 
-  return `# Logo Generator
+  ## Table of Contents
+  - [Characters](#characters)
+  - [Text Color](#textColor)
+  - [Shape](#shape)
+  - [Shape Color](#shapeColor)
 
-## Table of Contents
-- [Characters](#characters)
-- [Text Color](#textColor)
-- [Shape](#shape)
-- [Shape Color](#shapeColor)
-
-## Characters
-${characters}
-
-## Text Color
-${textColor}
-
-## Shape
-${shape}
-
-## Shape Color
-${shapeColor}
-`;
+  ## Characters
+  ${answers.characters}
+  
+  ## Text Color
+  ${answers.textColor}
+  
+  ## Shape
+  ${answers.shape}
+  
+  ## Shape Color
+  ${answers.shapeColor}
+  `;
 }
 
-// *** Function to write README file ***
-function writeToFile(fileName, data) {
-  fs.writeFile(fileName, data, (err) =>
-    err ? console.error(err) : console.log('Congratulations!! README.md created :)')
+function writeToFile(fileName, content) {
+  fs.writeFile(fileName, content, (err) =>
+    err
+      ? console.error(err)
+      : console.log(`Generated ${fileName} successfully.`)
   );
 }
 
-// **** Function call Logo Generator or README creator ****
-function generateLogoAndReadme(answers) {
-  generateLogo(answers);
-  const readme = createREADME(answers);
-  writeToFile('README.md', readme);
+function generateLogoAndReadme() {
+  inquirer
+    .prompt(questions)
+    .then((answers) => {
+      generateLogo(answers);
+
+      const readmeContent = createREADME(answers);
+      writeToFile('README.md', readmeContent);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
-// **** Function to prompt for input and generate logo and readme ****
-function promptForInput() {
-  inquirer.prompt(questions).then((answers) => {
-    generateLogoAndReadme(answers);
-  });
-}
-
-if (require.main === module) {
-  promptForInput();
-}
-
-module.exports = {
-  generateLogo,
-};
-
-
-
-//const saveLogo = './examples/'
-//fs.writeFileSync(`${saveLogo}${answers.characteres}`, logo.renderLogo());
-
+generateLogoAndReadme();
