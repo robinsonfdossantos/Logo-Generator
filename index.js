@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
+const path = require('path');
 
 const { createSVGWindow } = require('svgdom');
 const { SVG, registerWindow } = require('@svgdotjs/svg.js');
@@ -82,6 +83,21 @@ function generateLogo(answers) {
       console.log('Open logo.svg in a browser to view the logo.');
     }
   });
+
+  // ***** Save the Logo in the folder 'examples' *****
+  const saveLogo = 'examples';
+  const saveLogoPath = path.join(saveLogo, `${characters}.svg`);
+
+  fs.writeFile(saveLogoPath, logoSvgContent, (err) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log(`Generated ${saveLogoPath}`);
+      console.log(`Open ${saveLogoPath} in a browser to view the logo.`);
+    }
+  });
+
+
 }
 
 // **** Function to create README ****
