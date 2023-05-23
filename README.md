@@ -38,11 +38,7 @@
 
   These are some examples of logos created by the appliation.
 
-  <img src="./examples/LOL.svg" alt="Square example" widht = 45%/>
-  <img src="./examples/RDS.svg" alt="Triangle example" widht = 45%/>
-
-  <img src="./examples/TNT.svg" alt="Circle example" widht = 45%/>
-  <img src="./examples/TNT1.svg" alt="Triangle example 1" widht = 45%/>
+![Square example](./examples/LOL.svg "Square example") ![Triangle example](./examples/RDS.svg "Triangle example") ![Circle example](./examples/TNT.svg "Circle example") ![Triangle example 1](./examples/TNT1.svg "Triangle example 1")
 
   ## License
 
