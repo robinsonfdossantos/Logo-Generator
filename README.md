@@ -9,7 +9,7 @@
   - [Usage](#usage)
   - [License](#license)
   - [Contributing](#contributing)
-  - [Tests](#tests)
+  - [Credits](#credits)
   - [Questions](#questions)
   
   ## Installation
@@ -38,11 +38,11 @@
 
   These are some examples of logos created by the appliation.
 
-  <img src="./examples/LOL.svg" alt="Square example" />
-  <img src="./examples/RDS.svg" alt="Triangle example/>
+  <img src="./examples/LOL.svg" alt="Square example" widht = 45%/>
+  <img src="./examples/RDS.svg" alt="Triangle example" widht = 45%/>
 
-  <img src="./examples/TNT.svg" alt="Circle example" />
-  <img src="./examples/TNT1.svg" alt="Triangle example 1" />
+  <img src="./examples/TNT.svg" alt="Circle example" widht = 45%/>
+  <img src="./examples/TNT1.svg" alt="Triangle example 1" widht = 45%/>
 
   ## License
 
