@@ -26,6 +26,20 @@ const questions = [
   },
   {
     type: 'list',
+    name: 'font',
+    message: 'Choose a font:',
+    choices: ['Arial', 'Helvetica', 'Verdana', 'Times New Roman', 'Calibri', 'Bahnschrift', 'Bradley Hand ITC', 'Cooper Black'],
+  },
+  {
+    type: 'input',
+    name: 'fontSize',
+    message: 'Enter the font size (Pixels. Enter numbers only! ex: 20): ',
+    validate: function (value) {
+      return !isNaN(value) || 'Please, follow the example!.';
+    },
+  },
+  {
+    type: 'list',
     name: 'shape',
     message: 'Choose a shape:',
     choices: ['Triangle', 'Square', 'Circle'],
@@ -38,7 +52,7 @@ const questions = [
 ];
 
 function generateLogo(answers) {
-  const { characters, textColor, shape, shapeColor } = answers;
+  const { characters, textColor, font, fontSize, shape, shapeColor } = answers;
 
   const window = createSVGWindow();
   const document = window.document;
@@ -47,6 +61,7 @@ function generateLogo(answers) {
   const canvas = SVG(document.documentElement).size(300, 200);
 
   const ctx = createCanvas(300, 200).getContext('2d');
+  ctx.font = '24px ' + font; // Set the font based on the selected choice
 
   let shapeObject;
   switch (shape) {
@@ -60,12 +75,14 @@ function generateLogo(answers) {
       shapeObject = new Circle();
       break;
     default:
-      throw new Error('Invalid shape selected.');
+      throw new Error('Invalid shape.');
   }
   shapeObject.setColor(shapeColor);
   shapeObject.draw(canvas);
 
-  const text = canvas.text(characters).fill(textColor);
+  const text = canvas.text(characters).fill(textColor).font({
+    size: fontSize,
+  });
 
   const textWidth = text.bbox().width;
   const textHeight = text.bbox().height;
@@ -80,20 +97,27 @@ function generateLogo(answers) {
     if (err) {
       console.error(err);
     } else {
-      console.log('Generated logo.svg');
-      console.log('Open logo.svg in a browser to view the logo.');
+      console.log('\nGenerated logo.svg');
+      console.log('\nOpen logo.svg in a browser to view the logo.');
     }
   });
 
   const saveLogo = 'examples';
-  const saveLogoPath = path.join(saveLogo, `${characters}.svg`);
+  let saveLogoPath = path.join(saveLogo, `${characters}.svg`);
+
+  // Check if the file already exists
+  let counter = 1;
+  while (fs.existsSync(saveLogoPath)) {
+    const newName = `${characters}${counter}.svg`;
+    saveLogoPath = path.join(saveLogo, newName);
+    counter++;
+  }
 
   fs.writeFile(saveLogoPath, logoSvgContent, (err) => {
     if (err) {
       console.error(err);
     } else {
-      console.log(`Generated ${saveLogoPath}`);
-      console.log(`Open ${saveLogoPath} in a browser to view the logo.`);
+      console.log(`\nGenerated a copy in ${saveLogoPath}`);
     }
   });
 }
@@ -104,6 +128,8 @@ function createREADME(answers) {
   ## Table of Contents
   - [Characters](#characters)
   - [Text Color](#textColor)
+  - [Text Font](#font)
+  - [Font Size](#fontSize)
   - [Shape](#shape)
   - [Shape Color](#shapeColor)
 
@@ -112,6 +138,12 @@ function createREADME(answers) {
   
   ## Text Color
   ${answers.textColor}
+
+  ## Text Font
+  ${answers.font}
+
+  ## Font Size
+  ${answers.fontSize}
   
   ## Shape
   ${answers.shape}
@@ -125,7 +157,7 @@ function writeToFile(fileName, content) {
   fs.writeFile(fileName, content, (err) =>
     err
       ? console.error(err)
-      : console.log(`Generated ${fileName} successfully.`)
+      : console.log(`\nGenerated ${fileName} successfully.`)
   );
 }
 
@@ -135,8 +167,8 @@ function generateLogoAndReadme() {
     .then((answers) => {
       generateLogo(answers);
 
-      const readmeContent = createREADME(answers);
-      writeToFile('README.md', readmeContent);
+      const readme = createREADME(answers);
+      writeToFile('README.md', readme);
     })
     .catch((error) => {
       console.error(error);
