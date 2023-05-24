@@ -22,7 +22,7 @@ const questions = [
   {
     type: 'input',
     name: 'textColor',
-    message: 'Enter the text color (keyword or hexadecimal number): ',
+    message: 'Enter the text color (Color name or hexadecimal number): ',
   },
   {
     type: 'list',
@@ -47,7 +47,7 @@ const questions = [
   {
     type: 'input',
     name: 'shapeColor',
-    message: "Enter the shape's color (keyword or hexadecimal number): ",
+    message: "Enter the shape's color (Color name or hexadecimal number): ",
   },
 ];
 
@@ -61,7 +61,7 @@ function generateLogo(answers) {
   const canvas = SVG(document.documentElement).size(300, 200);
 
   const ctx = createCanvas(300, 200).getContext('2d');
-  ctx.font = '24px ' + font; // Set the font based on the selected choice
+  ctx.font = `${fontSize}px ${font}`;
 
   let shapeObject;
   switch (shape) {
@@ -81,7 +81,8 @@ function generateLogo(answers) {
   shapeObject.draw(canvas);
 
   const text = canvas.text(characters).fill(textColor).font({
-    size: fontSize,
+    family: font,
+    size: fontSize
   });
 
   const textWidth = text.bbox().width;
