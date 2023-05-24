@@ -27,7 +27,7 @@ const questions = [
   {
     type: 'list',
     name: 'font',
-    message: 'Choose a font:',
+    message: 'Choose a font: ',
     choices: ['Arial', 'Helvetica', 'Verdana', 'Times New Roman', 'Calibri', 'Bahnschrift', 'Bradley Hand ITC', 'Cooper Black'],
   },
   {
