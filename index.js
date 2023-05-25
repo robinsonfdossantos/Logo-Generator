@@ -2,11 +2,7 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 const path = require('path');
 
-const { createSVGWindow } = require('svgdom');
-const { SVG, registerWindow } = require('@svgdotjs/svg.js');
-const { createCanvas } = require('canvas');
-
-const {Circle, Triangle, Square} = require("./lib")
+const { Circle, Triangle, Square } = require("./lib")
 
 const questions = [
   {
@@ -87,6 +83,15 @@ function generateLogo(answers) {
     const newName = `${characters}${counter}.svg`;
     saveLogoPath = path.join(saveLogo, newName);
     counter++;
+  }
+
+  // Check if characters contain special characters and replace them with numbers if true
+  const rename = /[^\w\s]/g;
+  if (rename.test(characters)) {
+    const changeName = characters.replace(rename, (match) => {
+      return match.charCodeAt(0);
+    });
+    saveLogoPath = path.join(saveLogo, `${changeName}.svg`);
   }
 
   fs.writeFile(saveLogoPath, logoSvgContent, (err) => {

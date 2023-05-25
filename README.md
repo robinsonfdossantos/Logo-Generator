@@ -26,7 +26,7 @@
 
   Run the terminal built into VS Code. Make sure you have installed all required packages using 'npm install or npm i' command, then run the program using 'node index.js or npm start' command.
 
-  Go through all the questions, after you finish answering all of them a logo will be created and a copy will be saved in the ./examples directory with the name of the initials you used to create the logo, you can use the same name for different logos , but when saving it, a number will be added to its name to avoid duplicate files.
+  Go through all the questions, after you finish answering all of them a logo will be created and a copy will be saved in the ./examples directory with the name of the initials you used to create the logo, you can use the same name for different logos , but when saving it, a number will be added to its name to avoid duplicate files. Special characters may be used, but the saved name will become a random number for validation purposes.
   
   After receiving the message that the logo has been created, you must open it in a browser to check the final result.
 
@@ -44,7 +44,7 @@
 
 ![Triangle example](./examples/ADL.svg "Triangle example 1")  ![Triangle example](./examples/TNT.svg "Triangle example 2") 
 ![Square example](./examples/RDS.svg "Square example 1")  ![Square example](./examples/LOL.svg "Square example 2")  
-![Circle example](./examples/SEP.svg "Circle example 1") 
+![Circle example](./examples/SEP.svg "Circle example 1") ![Circle example](./examples/40833.svg "Circle example 1") 
 
   ## License
 
