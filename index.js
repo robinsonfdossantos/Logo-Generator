@@ -6,9 +6,7 @@ const { createSVGWindow } = require('svgdom');
 const { SVG, registerWindow } = require('@svgdotjs/svg.js');
 const { createCanvas } = require('canvas');
 
-const Triangle = require('./lib/Triangle');
-const Square = require('./lib/Square');
-const Circle = require('./lib/Circle');
+const {Circle, Triangle, Square} = require("./lib")
 
 const questions = [
   {
@@ -52,47 +50,24 @@ const questions = [
 ];
 
 function generateLogo(answers) {
-  const { characters, textColor, font, fontSize, shape, shapeColor } = answers;
-
-  const window = createSVGWindow();
-  const document = window.document;
-  registerWindow(window, document);
-
-  const canvas = SVG(document.documentElement).size(300, 200);
-
-  const ctx = createCanvas(300, 200).getContext('2d');
-  ctx.font = `${fontSize}px ${font}`;
+  const { characters, shape } = answers;
 
   let shapeObject;
   switch (shape) {
     case 'Triangle':
-      shapeObject = new Triangle();
+      shapeObject = new Triangle(answers);
       break;
     case 'Square':
-      shapeObject = new Square();
+      shapeObject = new Square(answers);
       break;
     case 'Circle':
-      shapeObject = new Circle();
+      shapeObject = new Circle(answers);
       break;
     default:
       throw new Error('Invalid shape.');
   }
-  shapeObject.setColor(shapeColor);
-  shapeObject.draw(canvas);
 
-  const text = canvas.text(characters).fill(textColor).font({
-    family: font,
-    size: fontSize
-  });
-
-  const textWidth = text.bbox().width;
-  const textHeight = text.bbox().height;
-  const textX = 100 - textWidth / 2;
-  const textY = 100 - textHeight / 2;
-
-  text.move(textX, textY);
-
-  const logoSvgContent = canvas.svg();
+  const logoSvgContent = shapeObject.getSVG();
 
   fs.writeFile('logo.svg', logoSvgContent, (err) => {
     if (err) {
